@@ -9,10 +9,15 @@
  */
 
 #include <iostream>
+#include <thread>
 
 #include "base_pool.h"
-
+#include "timer.h"
 int main(int argc, char* argv[]) {
   std::cout << MSG << std::endl;
+  Timer t;
+  std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+  std::cout << "Timer has elapsed " << t.Elapsed() << " millis time"
+            << std::endl;
   return 0;
 }
