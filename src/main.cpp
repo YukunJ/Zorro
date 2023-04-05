@@ -13,6 +13,9 @@
 
 #include "base_pool.h"
 #include "timer.h"
+
+#define MSG "Hello World from Zorro!"
+
 int main(int argc, char* argv[]) {
   std::cout << MSG << std::endl;
   Timer t;
