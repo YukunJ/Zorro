@@ -41,14 +41,20 @@ enum class PoolStatus { PREPARE, RUNNING, EXIT };
 
 class BasePool {
  public:
-  /* requires the type specification */
-  BasePool(PoolType pool_type)
-      : type_(pool_type),
+  /* requires the thread count and type specification */
+  BasePool(int concurrency, PoolType pool_type)
+      : concurrency_(concurrency),
+        type_(pool_type),
         status_(pool_type == PoolType::BATCH ? PoolStatus::PREPARE
                                              : PoolStatus::RUNNING){};
 
   /* virtual dtor as always */
   virtual ~BasePool(){};
+
+  /*
+   * Get the thread count
+   */
+  auto GetConcurrency() -> int { return concurrency_; }
 
   /*
    * Get the PoolType
@@ -100,6 +106,7 @@ class BasePool {
   BasePool& operator=(const BasePool&) = delete;
   BasePool& operator=(BasePool&&) = delete;
 
+  int concurrency_;
   PoolType type_;
   PoolStatus status_;
 };
