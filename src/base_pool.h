@@ -8,6 +8,7 @@
  * all types of threadpool implementations in this project
  */
 
+#include <cassert>
 #include <functional>
 
 /**
@@ -30,21 +31,53 @@ using Task = std::function<void(void)>;
  */
 enum class PoolType { STREAM, BATCH };
 
+/*
+ * The Pool current Status
+ * PREPARE is in the BATCH mode when pool is not set to start running
+ * RUNNING is when pool workers are actively working
+ * EXIT means no more tasks will be submitted and worker could exit thread loop
+ */
+enum class PoolStatus { PREPARE, RUNNING, EXIT };
+
 class BasePool {
  public:
   /* requires the type specification */
-  BasePool(PoolType pool_type) : pool_type_(pool_type){};
+  BasePool(PoolType pool_type)
+      : type_(pool_type),
+        status_(pool_type == PoolType::BATCH ? PoolStatus::PREPARE
+                                             : PoolStatus::RUNNING){};
 
-  /* as always */
+  /* virtual dtor as always */
   virtual ~BasePool(){};
 
   /*
    * Get the PoolType
    */
-  auto GetType() -> PoolType { return pool_type_; }
+  auto GetType() -> PoolType { return type_; }
+
+  /*
+   * Get the PoolStatus
+   */
+  auto GetStatus() -> PoolStatus { return status_; }
+
+  /**
+   * Tell worker threads to begin working
+   * i.e. set the status to RUNNING
+   * Usually used in the BATCH mode
+   */
+  void Begin() {
+    assert(status_ != PoolStatus::EXIT);
+    status_ = PoolStatus::RUNNING;
+  }
+
+  /**
+   * Signal to worker threads that no more tasks will be submitted
+   * i.e. set the status to EXIT
+   * They can clean up and return from the thread loop
+   */
+  void Exit() { status_ = PoolStatus::EXIT; }
 
   /* --- virtual interface to be implemented --- */
-
   /**
    * Submit a Task to the threadpool
    * @param task the task to be executed in threadpool
@@ -58,12 +91,7 @@ class BasePool {
    * Typically, should call Exit() first and then WaitUntilFinished()
    */
   virtual void WaitUntilFinished() = 0;
-
-  /**
-   * Signal to worker threads that no more tasks will be submitted
-   * They can clean up and return from the thread loop
-   */
-  virtual void Exit() = 0;
+  /* --- end of virtual interface --- */
 
  protected:
   /* no copy & move allowed for all kinds of thread pool */
@@ -72,5 +100,6 @@ class BasePool {
   BasePool& operator=(const BasePool&) = delete;
   BasePool& operator=(BasePool&&) = delete;
 
-  PoolType pool_type_;
+  PoolType type_;
+  PoolStatus status_;
 };
