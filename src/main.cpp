@@ -23,5 +23,10 @@ int main(int argc, char* argv[]) {
   std::this_thread::sleep_for(std::chrono::milliseconds(1000));
   std::cout << "Timer has elapsed " << t.Elapsed() << " millis time"
             << std::endl;
+  // light_weight task;
+  Test::light_test();
+  Test::normal_test();
+  Test::imbalanced_test();
+  Test::correctness_test();
   return 0;
 }

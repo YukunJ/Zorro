@@ -6,8 +6,12 @@
 #define SRC_TEST_H
 
 
-class test {
-
+class Test {
+  public:
+    static void light_test();
+    static void normal_test();
+    static void correctness_test();
+    static void imbalanced_test();
 };
 
 
