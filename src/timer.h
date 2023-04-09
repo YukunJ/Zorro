@@ -6,6 +6,7 @@
  *
  * This is a header file for the Timer utility
  */
+#pragma once
 
 #include <cstdint>
 

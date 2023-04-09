@@ -7,6 +7,7 @@
  * This is a header file specifying the interface for
  * all types of threadpool implementations in this project
  */
+#pragma once
 
 #include <cassert>
 #include <functional>
