@@ -13,6 +13,7 @@
 
 #include "base_pool.h"
 #include "timer.h"
+#include "test.h"
 
 #define MSG "Hello World from Zorro!"
 
