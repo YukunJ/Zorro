@@ -12,6 +12,7 @@
 #include <thread>
 
 #include "dummy_pool.h"
+#include "global_pool.h"
 #include "test.h"
 #include "timer.h"
 
@@ -19,18 +20,43 @@
 
 int main(int argc, char* argv[]) {
   std::cout << MSG << std::endl;
-  Timer t;
-  std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-  std::cout << "Timer has elapsed " << t.Elapsed() << " millis time"
-            << std::endl;
+  std::cout << "Benchmark: Thread Count = " << THREAD_COUNT << std::endl;
 
   // baseline with Dummy Pool of direct blocking execution
+  std::cout << "==========Dummy Pool============" << std::endl;
+  {
+    DummyPool pool(THREAD_COUNT, PoolType::STREAM);
+    Test::correctness_test(pool);
+  }
   {
     DummyPool pool(THREAD_COUNT, PoolType::STREAM);
     Test::light_test(pool);
+  }
+  {
+    DummyPool pool(THREAD_COUNT, PoolType::STREAM);
     Test::normal_test(pool);
+  }
+  {
+    DummyPool pool(THREAD_COUNT, PoolType::STREAM);
     Test::imbalanced_test(pool);
+  }
+
+  std::cout << "\n==========Global Pool============" << std::endl;
+  {
+    GlobalPool pool(THREAD_COUNT, PoolType::STREAM);
     Test::correctness_test(pool);
+  }
+  {
+    GlobalPool pool(THREAD_COUNT, PoolType::STREAM);
+    Test::light_test(pool);
+  }
+  {
+    GlobalPool pool(THREAD_COUNT, PoolType::STREAM);
+    Test::normal_test(pool);
+  }
+  {
+    GlobalPool pool(THREAD_COUNT, PoolType::STREAM);
+    Test::imbalanced_test(pool);
   }
   return 0;
 }
