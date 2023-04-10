@@ -11,9 +11,9 @@
 #include <iostream>
 #include <thread>
 
-#include "base_pool.h"
-#include "timer.h"
+#include "dummy_pool.h"
 #include "test.h"
+#include "timer.h"
 
 #define MSG "Hello World from Zorro!"
 
@@ -23,10 +23,14 @@ int main(int argc, char* argv[]) {
   std::this_thread::sleep_for(std::chrono::milliseconds(1000));
   std::cout << "Timer has elapsed " << t.Elapsed() << " millis time"
             << std::endl;
-  // light_weight task;
-  Test::light_test();
-  Test::normal_test();
-  Test::imbalanced_test();
-  Test::correctness_test();
+
+  // baseline with Dummy Pool of direct blocking execution
+  {
+    DummyPool pool(THREAD_COUNT, PoolType::STREAM);
+    Test::light_test(pool);
+    Test::normal_test(pool);
+    Test::imbalanced_test(pool);
+    Test::correctness_test(pool);
+  }
   return 0;
 }
