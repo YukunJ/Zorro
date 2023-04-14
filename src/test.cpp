@@ -177,6 +177,8 @@ void merge(int arr[], int start, int mid, int end, std::atomic<int> *flag,
         pool->Submit(std::bind(merge, arr, start, mid, end, flag, left_flag, right_flag, pool));
         return;
     }
+    delete left_flag;
+    delete right_flag;
     int start2 = mid + 1;
 
     // If the direct merge is already sorted
