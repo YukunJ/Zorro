@@ -19,8 +19,6 @@ uint64_t Test::light_test(BasePool& pool) {
   for (int i = 0; i < TASK_COUNT_LIGHT; i++) {
     pool.Submit(light_task);
   }
-  // TODO: might delete Exit since we need to support spawning task from task
-  pool.Exit();
   pool.WaitUntilFinished();
   uint64_t result = timer.Elapsed();
   std::cout << "Light test: Timer has elapsed " << result
@@ -38,8 +36,6 @@ uint64_t Test::normal_test(BasePool& pool) {
   for (int i = 0; i < TASK_COUNT_NORMAL; i++) {
     pool.Submit(normal_task);
   }
-  // TODO: might delete Exit since we need to support spawning task from task
-  pool.Exit();
   pool.WaitUntilFinished();
   uint64_t result = timer.Elapsed();
   std::cout << "Normal test: Timer has elapsed " << result
@@ -76,8 +72,6 @@ uint64_t Test::imbalanced_test(BasePool& pool) {
   for (int i = 0; i < TASK_COUNT_IMBALANCED; i++) {
     pool.Submit(std::bind(imbalanced_task, durations[i]));
   }
-  // TODO: might delete Exit since we need to support spawning task from task
-  pool.Exit();
   pool.WaitUntilFinished();
   uint64_t result = timer.Elapsed();
   std::cout << "Imbalanced test: Timer has elapsed " << result
@@ -97,8 +91,6 @@ uint64_t Test::correctness_test(BasePool& pool) {
   for (int i = 0; i < TASK_COUNT_CORRECTNESS; i++) {
     pool.Submit(std::bind(correctness_test_helper, buffer, i));
   }
-  // TODO: might delete Exit since we need to support spawning task from task
-  pool.Exit();
   pool.WaitUntilFinished();
   uint64_t result = timer.Elapsed();
   std::cout << "Correctness test: Timer has elapsed " << result
