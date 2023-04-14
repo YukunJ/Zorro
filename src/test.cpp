@@ -77,7 +77,7 @@ void Test::imbalanced_test(BasePool& pool) {
   pool.WaitUntilFinished();
   std::cout << "Imbalanced test: Timer has elapsed " << timer.Elapsed()
             << " millis time" << std::endl;
-  std::cout << counter << std::endl;
+  // std::cout << counter << std::endl;
 }
 
 void correctness_test_helper(int* buffer, int index) { buffer[index] += 1; }
@@ -99,4 +99,68 @@ void Test::correctness_test(BasePool& pool) {
   for (int i = 0; i < TASK_COUNT_CORRECTNESS; i++) {
     assert(buffer[i] == 1);
   }
+}
+
+int partition(int arr[], int start, int end) {
+    int pivot = arr[start];
+    int count = 0;
+    for (int i = start + 1; i <= end; i++) {
+        if (arr[i] <= pivot)
+            count++;
+    }
+
+    // Giving pivot element its correct position
+    int pivotIndex = start + count;
+    std::swap(arr[pivotIndex], arr[start]);
+    // Sorting left and right parts of the pivot element
+    int i = start, j = end;
+    while (i < pivotIndex && j > pivotIndex) {
+        while (arr[i] <= pivot) {
+            i++;
+        }
+        while (arr[j] > pivot) {
+            j--;
+        }
+        if (i < pivotIndex && j > pivotIndex) {
+            std::swap(arr[i++], arr[j--]);
+        }
+    }
+    return pivotIndex;
+}
+
+void quickSort(int arr[], int start, int end, BasePool *pool) {
+    // base case
+    //if (start >= end)
+        //return;
+    if (end - start <= QUICK_SORT_THRESHOLD) {
+        std::sort(arr + start, arr + end + 1);
+        return;
+    }
+    // partitioning the array
+    int p = partition(arr, start, end);
+    // Sorting the left part
+    pool->Submit(std::bind(quickSort, arr, start, p - 1, pool));
+    // Sorting the right part
+    pool->Submit(std::bind(quickSort, arr, p + 1, end, pool));
+}
+
+
+void Test::recursion_test(BasePool& pool) {
+    long counter = 0;
+    int Rand[ARRAY_SIZE_RECURSION];
+    for (int i = 0; i <ARRAY_SIZE_RECURSION; i++) {
+        Rand[i] = rand();
+        counter += Rand[i];
+    }
+    Timer timer;
+    pool.Submit(std::bind(quickSort, Rand, 0, ARRAY_SIZE_RECURSION - 1, &pool));
+    pool.WaitUntilFinished();
+    std::cout << "Recursion test: Timer has elapsed " << timer.Elapsed()
+              << " millis time" << std::endl;
+    long new_counter = Rand[0];
+    for (int i = 0; i < ARRAY_SIZE_RECURSION - 1; i++) {
+        assert(Rand[i] <= Rand[i + 1]);
+        new_counter += Rand[i + 1];
+    }
+    assert(counter == new_counter);
 }

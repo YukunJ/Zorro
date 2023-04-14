@@ -40,6 +40,10 @@ int main(int argc, char* argv[]) {
     DummyPool pool(THREAD_COUNT, PoolType::STREAM);
     Test::imbalanced_test(pool);
   }
+  {
+    DummyPool pool(THREAD_COUNT, PoolType::STREAM);
+    Test::recursion_test(pool);
+  }
 
   std::cout << "\n==========Global Pool============" << std::endl;
   {
@@ -57,6 +61,10 @@ int main(int argc, char* argv[]) {
   {
     GlobalPool pool(THREAD_COUNT, PoolType::STREAM);
     Test::imbalanced_test(pool);
+  }
+  {
+    GlobalPool pool(THREAD_COUNT, PoolType::STREAM);
+    Test::recursion_test(pool);
   }
   return 0;
 }
