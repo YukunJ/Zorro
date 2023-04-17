@@ -25,13 +25,27 @@ Secondly, with a distributed work queue, synchronization is challenging. The mor
 
 --- 
 
+#### Preliminary Result
+
+| Thread = 8               | Dummy | Global Queue |
+|--------------------------|-------|--------------|
+| Correctness              | 0     | 501 (**0.000**)  |
+| Light                    | 1     | 473 (**0.002**)  |
+| Computation              | 5260  | 686 (**7.668**)  |
+| Imbalanced               | 2187  | 328 (**6.668**)  |
+| Recursion (Divide)       | 106   | 27  (**3.926**)  |
+| Recursion (Divide+Merge) | 1269  | 888 (**1.429**)  |
+
+---
+
+
 #### Schedule
 
-+ **Week1**: Read related literature and setup repo build with base interface
-+ **Week2**: Build the global work queue version
-+ **Week3**: Build the distributed thread-local work queue version
-+ **Week4**: Enable work-stealing policy to enhance work balance
-+ **Week5**: Wrap up the project and prepare report & poster
++ [x] **Week1**: Read related literature and setup repo build with base interface
++ [x] **Week2**: Build the global work queue version
++ [ ] **Week3**: Build the distributed thread-local work queue version
++ [ ] **Week4**: Enable work-stealing policy to enhance work balance
++ [ ] **Week5**: Wrap up the project and prepare report & poster
 
 
 
