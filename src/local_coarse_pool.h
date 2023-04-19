@@ -19,7 +19,8 @@
 
 #include "base_pool.h"
 
-/* padded this struct to be at least multiples of cache-line width to avoid false-sharing */
+/* padded this struct to be at least multiples of cache-line width to avoid
+ * false-sharing */
 typedef struct PaddedResource {
   std::queue<Task> queue;
   std::mutex mtx;

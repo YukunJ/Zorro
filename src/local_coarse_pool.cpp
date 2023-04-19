@@ -55,12 +55,6 @@ LocalCoarsePool::LocalCoarsePool(int concurrency, PoolType pool_type)
 LocalCoarsePool::~LocalCoarsePool() {
   // force signal and clear
   Exit();
-  for (int i = 0; i < concurrency_; i++) {
-    std::unique_lock<std::mutex> lock(resources_[i]->mtx);
-    std::queue<Task> empty_queue;
-    resources_[i]->queue.swap(empty_queue);
-    resources_[i]->cv.notify_all();
-  }
   // harvest all worker threads
   for (auto& worker : threads_) {
     if (worker.joinable()) {
