@@ -25,20 +25,21 @@ LocalFinePool::LocalFinePool(int concurrency, PoolType pool_type)
       };
       // enter main loop of polling and execution
       while (true) {
-        std::shared_ptr<Task> next_task = nullptr;
+        Task next_task;
+        bool has_next_task = false;
         {
           // wait for either a task available, or exit signal
           std::unique_lock<std::mutex> lock(resources_[id]->pop_mtx);
-          resources_[id]->cv.wait(lock, [this, id = id, &next_task]() -> bool {
-            next_task = resources_[id]->queue.pop();
-            return status_ == PoolStatus::EXIT || next_task != nullptr;
+          resources_[id]->cv.wait(lock, [this, id = id, &next_task, &has_next_task]() -> bool {
+            has_next_task = resources_[id]->queue.pop(next_task);
+            return status_ == PoolStatus::EXIT || has_next_task;
           });
-          if (next_task == nullptr && status_ == PoolStatus::EXIT) {
+          if (!has_next_task && status_ == PoolStatus::EXIT) {
             // this pool is about to be destroyed
             return;
           }
         }
-        (*next_task)();
+        next_task();
         // there is no add_fetch available
         int post_increment = finish_count_.fetch_add(1) + 1;
         // printf("Finished task %d\n", post_increment);

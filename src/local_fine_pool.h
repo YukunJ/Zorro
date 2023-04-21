@@ -23,38 +23,41 @@ template <typename T>
 class fine_queue {
 private:
     struct node {
-        std::shared_ptr<T> data;
-        std::unique_ptr<node> next;
+        T data;
+        node *next;
     };
     // std::mutex head_mutex;
-    std::unique_ptr<node> head;
+    node *head;
     // std::mutex tail_mutex;
     node *tail;
 
-    std::unique_ptr<node> pop_head() {
+    node *pop_head() {
         // std::lock_guard<std::mutex> head_lock(head_mutex);
-        if (head.get() == tail) {
+        if (head == tail) {
             return nullptr;
         }
-        std::unique_ptr<node> old_head = std::move(head);
-        head = std::move(old_head->next);
+        node * old_head = head;
+        head = old_head->next;
         return old_head;
     }
 public:
-    fine_queue():head(new node), tail(head.get()) {}
+    fine_queue():head(new node), tail(head) {}
     fine_queue(const fine_queue& other) = delete;
     fine_queue& operator=(const fine_queue& other) = delete;
-    std::shared_ptr<T> pop() {
-        std::unique_ptr<node> old_head = pop_head();
-        return old_head?old_head->data:nullptr;
+    bool pop(T &task) {
+        node *old_head = pop_head();
+        if (old_head != nullptr) {
+            task = std::move(old_head->data);
+            delete old_head;
+            return true;
+        }
+        return false;
     }
     void push(T new_value) {
-        std::shared_ptr<T> new_data(std::make_shared<T>(std::move(new_value)));
-        std::unique_ptr<node> p(new node);
-        node * const new_tail = p.get();
+        node *new_tail = new node;
         // std::lock_guard<std::mutex> tail_lock(tail_mutex);
-        tail->data = new_data;
-        tail->next = std::move(p);
+        tail->data = std::move(new_value);
+        tail->next = new_tail;
         tail = new_tail;
     }
 };
