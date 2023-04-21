@@ -30,7 +30,10 @@ LocalFinePool::LocalFinePool(int concurrency, PoolType pool_type)
         {
           // wait for either a task available, or exit signal
           do {
-              has_next_task = resources_[id]->queue.pop(next_task);
+              {
+                  std::unique_lock <std::mutex> lock(resources_[id]->pop_mtx);
+                  has_next_task = resources_[id]->queue.pop(next_task);
+              }
               if (!has_next_task) {
                   std::this_thread::yield();
               }
