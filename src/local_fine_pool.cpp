@@ -70,9 +70,7 @@ LocalFinePool::~LocalFinePool() {
   Exit();
   // harvest all worker threads
   for (auto& worker : threads_) {
-    if (worker.joinable()) {
       worker.join();
-    }
   }
 }
 
