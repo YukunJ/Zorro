@@ -58,7 +58,7 @@ GlobalPool::~GlobalPool() {
   }
   // harvest all worker threads
   for (auto& worker : threads_) {
-      worker.join();
+    worker.join();
   }
 }
 

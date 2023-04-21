@@ -16,6 +16,8 @@
 void light_task() { return; }
 
 uint64_t Test::light_test(BasePool &pool) {
+  std::cout << "Begin light test" << std::endl;
+  fflush(stdout);
   Timer timer;
   for (int i = 0; i < TASK_COUNT_LIGHT; i++) {
     pool.Submit(light_task);
@@ -34,6 +36,8 @@ void normal_task() {
 }
 
 uint64_t Test::normal_test(BasePool &pool) {
+  std::cout << "Begin normal test" << std::endl;
+  fflush(stdout);
   Timer timer;
   for (int i = 0; i < TASK_COUNT_NORMAL; i++) {
     pool.Submit(normal_task);
@@ -54,6 +58,9 @@ void imbalanced_task(int duration) {
 uint64_t Test::imbalanced_test(BasePool &pool) {
   // TODO: setup seed for generators
   // First generate the test sequence
+
+  std::cout << "Begin imbalanced test" << std::endl;
+  fflush(stdout);
   int durations[TASK_COUNT_IMBALANCED];
   std::default_random_engine generator_light;
   std::uniform_int_distribution<int> distribution_light(5, 15);
@@ -84,6 +91,8 @@ uint64_t Test::imbalanced_test(BasePool &pool) {
 void correctness_test_helper(int *buffer, int index) { buffer[index] += 1; }
 
 uint64_t Test::correctness_test(BasePool &pool) {
+  std::cout << "Begin correctness test" << std::endl;
+  fflush(stdout);
   int buffer[TASK_COUNT_CORRECTNESS];
   for (int i = 0; i < TASK_COUNT_CORRECTNESS; i++) {
     buffer[i] = 0;
@@ -146,6 +155,8 @@ void quickSort(int arr[], int start, int end, BasePool *pool) {
 }
 
 uint64_t Test::recursion_test(BasePool &pool) {
+  std::cout << "Begin recursion test" << std::endl;
+  fflush(stdout);
   long counter = 0;
   int Rand[ARRAY_SIZE_RECURSION];
   for (int i = 0; i < ARRAY_SIZE_RECURSION; i++) {
@@ -239,6 +250,8 @@ void mergeSort(int arr[], int l, int r, BasePool *pool,
 }
 
 uint64_t Test::recursion_test_merge(BasePool &pool) {
+  std::cout << "Begin merge test" << std::endl;
+  fflush(stdout);
   long counter = 0;
   int Rand[ARRAY_SIZE_RECURSION_MERGE];
   for (int i = 0; i < ARRAY_SIZE_RECURSION_MERGE; i++) {
