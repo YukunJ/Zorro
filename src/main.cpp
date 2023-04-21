@@ -16,6 +16,7 @@
 #include "dummy_pool.h"
 #include "global_pool.h"
 #include "local_coarse_pool.h"
+#include "local_fine_pool.h"
 #include "test.h"
 #include "timer.h"
 
@@ -58,6 +59,37 @@ int main(int argc, char* argv[]) {
   std::vector<std::string> dummy_performance{"Dummy Pool"};
   std::vector<std::string> global_performance{"Global Pool"};
   std::vector<std::string> local_coarse_performance{"Local Coarse Pool"};
+  std::vector<std::string> local_fine_performance{"Local Fine Pool"};
+
+    // Local Fine Pool
+    {
+        LocalFinePool pool(THREAD_COUNT, PoolType::STREAM);
+        local_fine_performance.push_back(
+                std::to_string(Test::correctness_test(pool)));
+    }
+    {
+        LocalFinePool pool(THREAD_COUNT, PoolType::STREAM);
+        local_fine_performance.push_back(std::to_string(Test::light_test(pool)));
+    }
+    {
+        LocalFinePool pool(THREAD_COUNT, PoolType::STREAM);
+        local_fine_performance.push_back(std::to_string(Test::normal_test(pool)));
+    }
+    {
+        LocalFinePool pool(THREAD_COUNT, PoolType::STREAM);
+        local_fine_performance.push_back(
+                std::to_string(Test::imbalanced_test(pool)));
+    }
+    {
+        LocalFinePool pool(THREAD_COUNT, PoolType::STREAM);
+        local_fine_performance.push_back(
+                std::to_string(Test::recursion_test(pool)));
+    }
+    {
+        LocalFinePool pool(THREAD_COUNT, PoolType::STREAM);
+        local_fine_performance.push_back(
+                std::to_string(Test::recursion_test_merge(pool)));
+    }
 
   // Dummy Pool
   {
@@ -147,5 +179,6 @@ int main(int argc, char* argv[]) {
   print_formatted_vector(dummy_performance, dummy_performance, false);
   print_formatted_vector(global_performance, dummy_performance, true);
   print_formatted_vector(local_coarse_performance, dummy_performance, true);
+  print_formatted_vector(local_fine_performance, dummy_performance, true);
   return 0;
 }
