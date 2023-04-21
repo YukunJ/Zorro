@@ -61,35 +61,35 @@ int main(int argc, char* argv[]) {
   std::vector<std::string> local_coarse_performance{"Local Coarse Pool"};
   std::vector<std::string> local_fine_performance{"Local Fine Pool"};
 
-    // Local Fine Pool
-    {
-        LocalFinePool pool(THREAD_COUNT, PoolType::STREAM);
-        local_fine_performance.push_back(
-                std::to_string(Test::correctness_test(pool)));
-    }
-    {
-        LocalFinePool pool(THREAD_COUNT, PoolType::STREAM);
-        local_fine_performance.push_back(std::to_string(Test::light_test(pool)));
-    }
-    {
-        LocalFinePool pool(THREAD_COUNT, PoolType::STREAM);
-        local_fine_performance.push_back(std::to_string(Test::normal_test(pool)));
-    }
-    {
-        LocalFinePool pool(THREAD_COUNT, PoolType::STREAM);
-        local_fine_performance.push_back(
-                std::to_string(Test::imbalanced_test(pool)));
-    }
-    {
-        LocalFinePool pool(THREAD_COUNT, PoolType::STREAM);
-        local_fine_performance.push_back(
-                std::to_string(Test::recursion_test(pool)));
-    }
-    {
-        LocalFinePool pool(THREAD_COUNT, PoolType::STREAM);
-        local_fine_performance.push_back(
-                std::to_string(Test::recursion_test_merge(pool)));
-    }
+  // Local Fine Pool
+  {
+    LocalFinePool pool(THREAD_COUNT, PoolType::STREAM);
+    local_fine_performance.push_back(
+        std::to_string(Test::correctness_test(pool)));
+  }
+  {
+    LocalFinePool pool(THREAD_COUNT, PoolType::STREAM);
+    local_fine_performance.push_back(std::to_string(Test::light_test(pool)));
+  }
+  {
+    LocalFinePool pool(THREAD_COUNT, PoolType::STREAM);
+    local_fine_performance.push_back(std::to_string(Test::normal_test(pool)));
+  }
+  {
+    LocalFinePool pool(THREAD_COUNT, PoolType::STREAM);
+    local_fine_performance.push_back(
+        std::to_string(Test::imbalanced_test(pool)));
+  }
+  {
+    LocalFinePool pool(THREAD_COUNT, PoolType::STREAM);
+    local_fine_performance.push_back(
+        std::to_string(Test::recursion_test(pool)));
+  }
+  {
+    LocalFinePool pool(THREAD_COUNT, PoolType::STREAM);
+    local_fine_performance.push_back(
+        std::to_string(Test::recursion_test_merge(pool)));
+  }
 
   // Dummy Pool
   {

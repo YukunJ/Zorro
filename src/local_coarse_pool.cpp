@@ -29,7 +29,7 @@ LocalCoarsePool::LocalCoarsePool(int concurrency, PoolType pool_type)
         {
           // wait for either a task available, or exit signal
           std::unique_lock<std::mutex> lock(resources_[id]->mtx);
-          resources_[id]->cv.wait(lock, [this, id = id]() -> bool {
+          resources_[id]->cv.wait(lock, [this, id]() -> bool {
             return status_ == PoolStatus::EXIT ||
                    !resources_[id]->queue.empty();
           });

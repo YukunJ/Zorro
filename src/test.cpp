@@ -4,6 +4,7 @@
 
 #include "test.h"
 
+#include <atomic>
 #include <iostream>
 #include <random>
 #include <thread>
@@ -23,6 +24,7 @@ uint64_t Test::light_test(BasePool &pool) {
   uint64_t result = timer.Elapsed();
   std::cout << "Light test: Timer has elapsed " << result << " millis time"
             << std::endl;
+  fflush(stdout);
   return result;
 }
 
@@ -40,6 +42,7 @@ uint64_t Test::normal_test(BasePool &pool) {
   uint64_t result = timer.Elapsed();
   std::cout << "Normal test: Timer has elapsed " << result << " millis time"
             << std::endl;
+  fflush(stdout);
   return result;
 }
 
@@ -74,6 +77,7 @@ uint64_t Test::imbalanced_test(BasePool &pool) {
   uint64_t result = timer.Elapsed();
   std::cout << "Imbalanced test: Timer has elapsed " << result << " millis time"
             << std::endl;
+  fflush(stdout);
   return result;
 }
 
@@ -92,6 +96,7 @@ uint64_t Test::correctness_test(BasePool &pool) {
   uint64_t result = timer.Elapsed();
   std::cout << "Correctness test: Timer has elapsed " << result
             << " millis time" << std::endl;
+  fflush(stdout);
   for (int i = 0; i < TASK_COUNT_CORRECTNESS; i++) {
     assert(buffer[i] == 1);
   }
@@ -153,6 +158,7 @@ uint64_t Test::recursion_test(BasePool &pool) {
   uint64_t result = timer.Elapsed();
   std::cout << "Recursion test (quick sort): Timer has elapsed " << result
             << " millis time" << std::endl;
+  fflush(stdout);
   long new_counter = Rand[0];
   for (int i = 0; i < ARRAY_SIZE_RECURSION - 1; i++) {
     assert(Rand[i] <= Rand[i + 1]);
@@ -247,6 +253,7 @@ uint64_t Test::recursion_test_merge(BasePool &pool) {
   uint64_t result = timer.Elapsed();
   std::cout << "Recursion test (merge sort): Timer has elapsed " << result
             << " millis time" << std::endl;
+  fflush(stdout);
   long new_counter = Rand[0];
   for (int i = 0; i < ARRAY_SIZE_RECURSION_MERGE - 1; i++) {
     // std::cout << i << " " << Rand[i] << " " << i + 1 << " " << Rand[i + 1] <<

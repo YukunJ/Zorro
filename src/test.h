@@ -5,8 +5,9 @@
 #ifndef SRC_TEST_H
 #define SRC_TEST_H
 
-#include "base_pool.h"
+#include <cstdint>
 
+#include "base_pool.h"
 #define TASK_COUNT_LIGHT 100000
 #define TASK_COUNT_NORMAL 100
 #define TASK_COUNT_IMBALANCED 100

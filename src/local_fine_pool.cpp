@@ -30,20 +30,22 @@ LocalFinePool::LocalFinePool(int concurrency, PoolType pool_type)
         {
           // wait for either a task available, or exit signal
           do {
-              {
-                  std::unique_lock <std::mutex> lock(resources_[id]->pop_mtx);
-                  has_next_task = resources_[id]->queue.pop(next_task);
-              }
-              if (!has_next_task) {
-                  std::this_thread::yield();
-              }
+            {
+              std::unique_lock<std::mutex> lock(resources_[id]->pop_mtx);
+              has_next_task = resources_[id]->queue.pop(next_task);
+            }
+            if (!has_next_task) {
+              std::this_thread::yield();
+            }
           } while (!has_next_task && status_ != PoolStatus::EXIT);
 
-//          std::unique_lock<std::mutex> lock(resources_[id]->pop_mtx);
-//          resources_[id]->cv.wait(lock, [this, id = id, &next_task, &has_next_task]() -> bool {
-//            has_next_task = resources_[id]->queue.pop(next_task);
-//            return status_ == PoolStatus::EXIT || has_next_task;
-//          });
+          //          std::unique_lock<std::mutex>
+          //          lock(resources_[id]->pop_mtx);
+          //          resources_[id]->cv.wait(lock, [this, id = id, &next_task,
+          //          &has_next_task]() -> bool {
+          //            has_next_task = resources_[id]->queue.pop(next_task);
+          //            return status_ == PoolStatus::EXIT || has_next_task;
+          //          });
           if (!has_next_task && status_ == PoolStatus::EXIT) {
             // this pool is about to be destroyed
             return;
@@ -83,8 +85,8 @@ void LocalFinePool::Submit(Task task) {
     // does this create contention? but seems unavoidable
     std::unique_lock<std::mutex> lock(resources_[i]->push_mtx);
     resources_[i]->queue.push(std::move(task));
-    //printf("Pushed task %d\n", robin);
-    //fflush(stdout);
+    // printf("Pushed task %d\n", robin);
+    // fflush(stdout);
   }
   resources_[i]->cv.notify_all();
 }
