@@ -29,11 +29,18 @@ LocalFinePool::LocalFinePool(int concurrency, PoolType pool_type)
         bool has_next_task = false;
         {
           // wait for either a task available, or exit signal
-          std::unique_lock<std::mutex> lock(resources_[id]->pop_mtx);
-          resources_[id]->cv.wait(lock, [this, id = id, &next_task, &has_next_task]() -> bool {
-            has_next_task = resources_[id]->queue.pop(next_task);
-            return status_ == PoolStatus::EXIT || has_next_task;
-          });
+          do {
+              has_next_task = resources_[id]->queue.pop(next_task);
+              if (!has_next_task) {
+                  std::this_thread::yield();
+              }
+          } while (!has_next_task && status_ != PoolStatus::EXIT);
+
+//          std::unique_lock<std::mutex> lock(resources_[id]->pop_mtx);
+//          resources_[id]->cv.wait(lock, [this, id = id, &next_task, &has_next_task]() -> bool {
+//            has_next_task = resources_[id]->queue.pop(next_task);
+//            return status_ == PoolStatus::EXIT || has_next_task;
+//          });
           if (!has_next_task && status_ == PoolStatus::EXIT) {
             // this pool is about to be destroyed
             return;
