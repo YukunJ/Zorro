@@ -17,6 +17,7 @@
 #include "global_pool.h"
 #include "local_coarse_pool.h"
 #include "local_fine_pool.h"
+#include "local_fine_pool_naive_steal.h"
 #include "test.h"
 #include "timer.h"
 
