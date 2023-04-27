@@ -49,8 +49,6 @@ GlobalPool::GlobalPool(int concurrency, PoolType pool_type)
 }
 
 GlobalPool::~GlobalPool() {
-  // force signal and clear
-  Exit();
   {
     std::unique_lock<std::mutex> lock(mtx_);
     std::queue<Task> empty_queue;
@@ -76,6 +74,9 @@ void GlobalPool::WaitUntilFinished() {
   std::unique_lock<std::mutex> lock(mtx_count_);
   cv_count_.wait(lock,
                  [this]() -> bool { return submit_count_ == finish_count_; });
+  Exit();
+  printf("task count: %d\n", finish_count_.load());
+  fflush(stdout);
 }
 
 void GlobalPool::Exit() {

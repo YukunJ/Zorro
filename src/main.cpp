@@ -63,68 +63,6 @@ int main(int argc, char* argv[]) {
   std::vector<std::string> local_fine_performance{"Local Fine Pool"};
   std::vector<std::string> naive_steal_performance{"Naive Steal"};
 
-    // Naive Steal
-    {
-        LocalFinePoolNaiveSteal pool(THREAD_COUNT, PoolType::STREAM);
-        naive_steal_performance.push_back(
-                std::to_string(Test::correctness_test(pool)));
-    }
-    {
-        LocalFinePoolNaiveSteal pool(THREAD_COUNT, PoolType::STREAM);
-        naive_steal_performance.push_back(std::to_string(Test::light_test(pool)));
-    }
-    {
-        LocalFinePoolNaiveSteal pool(THREAD_COUNT, PoolType::STREAM);
-        naive_steal_performance.push_back(std::to_string(Test::normal_test(pool)));
-    }
-    {
-        LocalFinePoolNaiveSteal pool(THREAD_COUNT, PoolType::STREAM);
-        naive_steal_performance.push_back(
-                std::to_string(Test::imbalanced_test(pool)));
-    }
-    {
-        LocalFinePoolNaiveSteal pool(THREAD_COUNT, PoolType::STREAM);
-        naive_steal_performance.push_back(
-                std::to_string(Test::recursion_test(pool)));
-    }
-    {
-        LocalFinePoolNaiveSteal pool(THREAD_COUNT, PoolType::STREAM);
-        naive_steal_performance.push_back(
-                std::to_string(Test::recursion_test_merge(pool)));
-    }
-
-    // Local Fine Pool
-    {
-        LocalFinePool pool(THREAD_COUNT, PoolType::STREAM);
-        local_fine_performance.push_back(
-                std::to_string(Test::correctness_test(pool)));
-    }
-    {
-        LocalFinePool pool(THREAD_COUNT, PoolType::STREAM);
-        local_fine_performance.push_back(std::to_string(Test::light_test(pool)));
-    }
-    {
-        LocalFinePool pool(THREAD_COUNT, PoolType::STREAM);
-        local_fine_performance.push_back(std::to_string(Test::normal_test(pool)));
-    }
-    {
-        LocalFinePool pool(THREAD_COUNT, PoolType::STREAM);
-        local_fine_performance.push_back(
-                std::to_string(Test::imbalanced_test(pool)));
-    }
-    {
-        LocalFinePool pool(THREAD_COUNT, PoolType::STREAM);
-        local_fine_performance.push_back(
-                std::to_string(Test::recursion_test(pool)));
-    }
-    {
-        LocalFinePool pool(THREAD_COUNT, PoolType::STREAM);
-        local_fine_performance.push_back(
-                std::to_string(Test::recursion_test_merge(pool)));
-    }
-
-
-
   // Dummy Pool
   {
     DummyPool pool(THREAD_COUNT, PoolType::STREAM);
@@ -208,6 +146,67 @@ int main(int argc, char* argv[]) {
     local_coarse_performance.push_back(
         std::to_string(Test::recursion_test_merge(pool)));
   }
+
+  // Local Fine Pool
+  {
+    LocalFinePool pool(THREAD_COUNT, PoolType::STREAM);
+    local_fine_performance.push_back(
+        std::to_string(Test::correctness_test(pool)));
+  }
+  {
+    LocalFinePool pool(THREAD_COUNT, PoolType::STREAM);
+    local_fine_performance.push_back(std::to_string(Test::light_test(pool)));
+  }
+  {
+    LocalFinePool pool(THREAD_COUNT, PoolType::STREAM);
+    local_fine_performance.push_back(std::to_string(Test::normal_test(pool)));
+  }
+  {
+    LocalFinePool pool(THREAD_COUNT, PoolType::STREAM);
+    local_fine_performance.push_back(
+        std::to_string(Test::imbalanced_test(pool)));
+  }
+  {
+    LocalFinePool pool(THREAD_COUNT, PoolType::STREAM);
+    local_fine_performance.push_back(
+        std::to_string(Test::recursion_test(pool)));
+  }
+  {
+    LocalFinePool pool(THREAD_COUNT, PoolType::STREAM);
+    local_fine_performance.push_back(
+        std::to_string(Test::recursion_test_merge(pool)));
+  }
+
+  // Naive Steal
+  {
+    LocalFinePoolNaiveSteal pool(THREAD_COUNT, PoolType::STREAM);
+    naive_steal_performance.push_back(
+        std::to_string(Test::correctness_test(pool)));
+  }
+  {
+    LocalFinePoolNaiveSteal pool(THREAD_COUNT, PoolType::STREAM);
+    naive_steal_performance.push_back(std::to_string(Test::light_test(pool)));
+  }
+  {
+    LocalFinePoolNaiveSteal pool(THREAD_COUNT, PoolType::STREAM);
+    naive_steal_performance.push_back(std::to_string(Test::normal_test(pool)));
+  }
+  {
+    LocalFinePoolNaiveSteal pool(THREAD_COUNT, PoolType::STREAM);
+    naive_steal_performance.push_back(
+        std::to_string(Test::imbalanced_test(pool)));
+  }
+  {
+    LocalFinePoolNaiveSteal pool(THREAD_COUNT, PoolType::STREAM);
+    naive_steal_performance.push_back(
+        std::to_string(Test::recursion_test(pool)));
+  }
+  {
+    LocalFinePoolNaiveSteal pool(THREAD_COUNT, PoolType::STREAM);
+    naive_steal_performance.push_back(
+        std::to_string(Test::recursion_test_merge(pool)));
+  }
+
   std::cout << "\nPerformance Table" << std::endl;
   print_formatted_vector(tests, tests, false);
   print_formatted_vector(dummy_performance, dummy_performance, false);

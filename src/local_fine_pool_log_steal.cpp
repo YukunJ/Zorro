@@ -12,7 +12,8 @@
 
 #include <iostream>
 
-LocalFinePoolLogSteal::LocalFinePoolLogSteal(int concurrency, PoolType pool_type)
+LocalFinePoolLogSteal::LocalFinePoolLogSteal(int concurrency,
+                                             PoolType pool_type)
     : BasePool(concurrency, pool_type) {
   for (int i = 0; i < concurrency_; i++) {
     // create padded resources

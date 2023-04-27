@@ -109,5 +109,5 @@ class BasePool {
 
   int concurrency_;
   PoolType type_;
-  volatile PoolStatus status_;
+  PoolStatus status_;
 };

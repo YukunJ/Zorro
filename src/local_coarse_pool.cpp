@@ -53,8 +53,6 @@ LocalCoarsePool::LocalCoarsePool(int concurrency, PoolType pool_type)
 }
 
 LocalCoarsePool::~LocalCoarsePool() {
-  // force signal and clear
-  Exit();
   // harvest all worker threads
   for (auto& worker : threads_) {
     worker.join();
@@ -78,6 +76,9 @@ void LocalCoarsePool::WaitUntilFinished() {
   std::unique_lock<std::mutex> lock(mtx_count_);
   cv_count_.wait(lock,
                  [this]() -> bool { return submit_count_ == finish_count_; });
+  Exit();
+  printf("task count: %d\n", finish_count_.load());
+  fflush(stdout);
 }
 
 void LocalCoarsePool::Exit() {
