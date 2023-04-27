@@ -26,13 +26,13 @@ private:
         T data;
         node *next;
     };
-    // std::mutex head_mutex;
+    std::mutex head_mutex;
     node *head;
-    // std::mutex tail_mutex;
+    std::mutex tail_mutex;
     node *tail;
 
     node *pop_head() {
-        // std::lock_guard<std::mutex> head_lock(head_mutex);
+        std::lock_guard<std::mutex> head_lock(head_mutex);
         if (head == tail) {
             return nullptr;
         }
@@ -56,7 +56,7 @@ public:
     }
     void push(T new_value) {
         node *new_tail = new node;
-        // std::lock_guard<std::mutex> tail_lock(tail_mutex);
+        std::lock_guard<std::mutex> tail_lock(tail_mutex);
         tail->data = std::move(new_value);
         tail->next = new_tail;
         tail = new_tail;

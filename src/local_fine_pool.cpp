@@ -31,7 +31,7 @@ LocalFinePool::LocalFinePool(int concurrency, PoolType pool_type)
           // wait for either a task available, or exit signal
           do {
             {
-              std::unique_lock<std::mutex> lock(resources_[id]->pop_mtx);
+              //std::unique_lock<std::mutex> lock(resources_[id]->pop_mtx);
               has_next_task = resources_[id]->queue.pop(next_task);
             }
             if (!has_next_task) {
@@ -56,7 +56,7 @@ LocalFinePool::LocalFinePool(int concurrency, PoolType pool_type)
         int post_increment = finish_count_.fetch_add(1) + 1;
         // printf("Finished task %d\n", post_increment);
         // fflush(stdout);
-        if (post_increment == submit_count_) {
+        if (post_increment == submit_count_.load()) {
           // notify the WaitUntilFinished() caller
           cv_count_.notify_all();
         }
@@ -81,7 +81,7 @@ void LocalFinePool::Submit(Task task) {
   int i = robin % concurrency_;
   {
     // does this create contention? but seems unavoidable
-    std::unique_lock<std::mutex> lock(resources_[i]->push_mtx);
+    // std::unique_lock<std::mutex> lock(resources_[i]->push_mtx);
     resources_[i]->queue.push(std::move(task));
     // printf("Pushed task %d\n", robin);
     // fflush(stdout);
@@ -91,8 +91,15 @@ void LocalFinePool::Submit(Task task) {
 
 void LocalFinePool::WaitUntilFinished() {
   std::unique_lock<std::mutex> lock(mtx_count_);
+    std::cout << "without stealing" << std::endl;
+    fflush(stdout);
+  if (submit_count_.load() == finish_count_.load()) {
+      Exit();
+      return;
+  }
   cv_count_.wait(lock,
-                 [this]() -> bool { return submit_count_ == finish_count_; });
+                 [this]() -> bool { return submit_count_.load() == finish_count_.load(); });
+  Exit();
 }
 
 void LocalFinePool::Exit() {
