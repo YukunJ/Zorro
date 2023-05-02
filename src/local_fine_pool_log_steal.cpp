@@ -94,6 +94,8 @@ void LocalFinePoolLogSteal::WaitUntilFinished() {
   std::unique_lock<std::mutex> lock(mtx_count_);
   cv_count_.wait(lock,
                  [this]() -> bool { return submit_count_ == finish_count_; });
+  finish_count_.store(0);
+  submit_count_.store(0);
 }
 
 void LocalFinePoolLogSteal::Exit() {

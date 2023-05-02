@@ -83,7 +83,8 @@ void LocalFinePool::WaitUntilFinished() {
   });
   printf("task count: %d\n", finish_count_.load());
   fflush(stdout);
-  Exit();
+  finish_count_.store(0);
+  submit_count_.store(0);
 }
 
 void LocalFinePool::Exit() {

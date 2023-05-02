@@ -31,9 +31,7 @@ LocalFinePoolNaiveSteal::LocalFinePoolNaiveSteal(int concurrency,
         {
           // wait for either a task available, or exit signal
           do {
-            {
-              has_next_task = resources_[id]->queue.pop(next_task);
-            }
+            { has_next_task = resources_[id]->queue.pop(next_task); }
             if (!has_next_task) {
               // steal here
               for (int j = 1; j < concurrency_; j++) {
@@ -93,7 +91,8 @@ void LocalFinePoolNaiveSteal::WaitUntilFinished() {
   cv_count_.wait(lock, [this]() -> bool {
     return submit_count_.load() == finish_count_.load();
   });
-  Exit();
+  finish_count_.store(0);
+  submit_count_.store(0);
   printf("task count: %d\n", finish_count_.load());
   fflush(stdout);
 }

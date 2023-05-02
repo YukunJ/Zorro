@@ -76,7 +76,8 @@ void LocalCoarsePool::WaitUntilFinished() {
   std::unique_lock<std::mutex> lock(mtx_count_);
   cv_count_.wait(lock,
                  [this]() -> bool { return submit_count_ == finish_count_; });
-  Exit();
+  finish_count_.store(0);
+  submit_count_.store(0);
   printf("task count: %d\n", finish_count_.load());
   fflush(stdout);
 }
