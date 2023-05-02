@@ -66,6 +66,7 @@ int main(int argc, char* argv[]) {
   // Dummy Pool
   {
     DummyPool pool(THREAD_COUNT, PoolType::STREAM);
+    std::this_thread::sleep_for(std::chrono::milliseconds(2000));
     dummy_performance.push_back(std::to_string(Test::correctness_test(pool)));
     std::this_thread::sleep_for(std::chrono::milliseconds(2000));
 
@@ -91,6 +92,7 @@ int main(int argc, char* argv[]) {
   // Global Pool
   {
     GlobalPool pool(THREAD_COUNT, PoolType::STREAM);
+    std::this_thread::sleep_for(std::chrono::milliseconds(2000));
     global_performance.push_back(std::to_string(Test::correctness_test(pool)));
     std::this_thread::sleep_for(std::chrono::milliseconds(2000));
 
@@ -116,6 +118,7 @@ int main(int argc, char* argv[]) {
   // Local Coarse Pool
   {
     LocalCoarsePool pool(THREAD_COUNT, PoolType::STREAM);
+    std::this_thread::sleep_for(std::chrono::milliseconds(2000));
     local_coarse_performance.push_back(
         std::to_string(Test::correctness_test(pool)));
     std::this_thread::sleep_for(std::chrono::milliseconds(2000));
@@ -144,6 +147,7 @@ int main(int argc, char* argv[]) {
   // Local Fine Pool
   {
     LocalFinePool pool(THREAD_COUNT, PoolType::STREAM);
+    std::this_thread::sleep_for(std::chrono::milliseconds(2000));
     local_fine_performance.push_back(
         std::to_string(Test::correctness_test(pool)));
     std::this_thread::sleep_for(std::chrono::milliseconds(2000));
@@ -172,6 +176,7 @@ int main(int argc, char* argv[]) {
   // Naive Steal
   {
     LocalFinePoolNaiveSteal pool(THREAD_COUNT, PoolType::STREAM);
+    std::this_thread::sleep_for(std::chrono::milliseconds(2000));
     naive_steal_performance.push_back(
         std::to_string(Test::correctness_test(pool)));
     std::this_thread::sleep_for(std::chrono::milliseconds(2000));
