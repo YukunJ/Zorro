@@ -18,6 +18,9 @@ LocalCoarsePool::LocalCoarsePool(int concurrency, PoolType pool_type)
     // create padded resources
     auto r = std::make_unique<PaddedResource>();
     resources_.push_back(std::move(r));
+  }
+  for (int i = 0; i < concurrency_; i++) {
+    // create padded resources
     // create thread worker
     threads_.emplace_back([this, id = i] {
       // in BATCH mode, wait for signal

@@ -65,8 +65,7 @@ int main(int argc, char* argv[]) {
   std::vector<std::string> naive_steal_performance{"Naive Steal"};
 
   // Global Pool
-  if (ops == 1)
-  {
+  if (ops == 1) {
     GlobalPool pool(THREAD_COUNT, PoolType::STREAM);
     std::this_thread::sleep_for(std::chrono::milliseconds(2000));
     global_performance.push_back(std::to_string(Test::correctness_test(pool)));
@@ -93,31 +92,31 @@ int main(int argc, char* argv[]) {
 
   // Local Coarse Pool
   if (ops == 2) {
-      LocalCoarsePool pool(THREAD_COUNT, PoolType::STREAM);
-      std::this_thread::sleep_for(std::chrono::milliseconds(2000));
-      local_coarse_performance.push_back(
-              std::to_string(Test::correctness_test(pool)));
-      std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+    LocalCoarsePool pool(THREAD_COUNT, PoolType::STREAM);
+    std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+    local_coarse_performance.push_back(
+        std::to_string(Test::correctness_test(pool)));
+    std::this_thread::sleep_for(std::chrono::milliseconds(2000));
 
-      local_coarse_performance.push_back(std::to_string(Test::light_test(pool)));
-      std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+    local_coarse_performance.push_back(std::to_string(Test::light_test(pool)));
+    std::this_thread::sleep_for(std::chrono::milliseconds(2000));
 
-      local_coarse_performance.push_back(std::to_string(Test::normal_test(pool)));
-      std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+    local_coarse_performance.push_back(std::to_string(Test::normal_test(pool)));
+    std::this_thread::sleep_for(std::chrono::milliseconds(2000));
 
-      local_coarse_performance.push_back(
-              std::to_string(Test::imbalanced_test(pool)));
-      std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+    local_coarse_performance.push_back(
+        std::to_string(Test::imbalanced_test(pool)));
+    std::this_thread::sleep_for(std::chrono::milliseconds(2000));
 
-      local_coarse_performance.push_back(
-              std::to_string(Test::recursion_test(pool)));
-      std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+    local_coarse_performance.push_back(
+        std::to_string(Test::recursion_test(pool)));
+    std::this_thread::sleep_for(std::chrono::milliseconds(2000));
 
-      local_coarse_performance.push_back(
-              std::to_string(Test::recursion_test_merge(pool)));
-      std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+    local_coarse_performance.push_back(
+        std::to_string(Test::recursion_test_merge(pool)));
+    std::this_thread::sleep_for(std::chrono::milliseconds(2000));
 
-      pool.Exit();
+    pool.Exit();
   }
 
   if (ops == 3)
@@ -151,8 +150,7 @@ int main(int argc, char* argv[]) {
   }
 
   // Naive Steal
-  if (ops == 4)
-  {
+  if (ops == 4) {
     LocalFinePoolNaiveSteal pool(THREAD_COUNT, PoolType::STREAM);
     std::this_thread::sleep_for(std::chrono::milliseconds(2000));
     naive_steal_performance.push_back(
@@ -180,33 +178,32 @@ int main(int argc, char* argv[]) {
     pool.Exit();
   }
 
-    // Dummy Pool
-    {
-        std::this_thread::sleep_for(std::chrono::milliseconds(5000));
-        DummyPool pool(THREAD_COUNT, PoolType::STREAM);
-        std::this_thread::sleep_for(std::chrono::milliseconds(2000));
-        dummy_performance.push_back(std::to_string(Test::correctness_test(pool)));
-        std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+  // Dummy Pool
+  {
+    std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+    DummyPool pool(THREAD_COUNT, PoolType::STREAM);
+    std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+    dummy_performance.push_back(std::to_string(Test::correctness_test(pool)));
+    std::this_thread::sleep_for(std::chrono::milliseconds(2000));
 
-        dummy_performance.push_back(std::to_string(Test::light_test(pool)));
-        std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+    dummy_performance.push_back(std::to_string(Test::light_test(pool)));
+    std::this_thread::sleep_for(std::chrono::milliseconds(2000));
 
-        dummy_performance.push_back(std::to_string(Test::normal_test(pool)));
-        std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+    dummy_performance.push_back(std::to_string(Test::normal_test(pool)));
+    std::this_thread::sleep_for(std::chrono::milliseconds(2000));
 
-        dummy_performance.push_back(std::to_string(Test::imbalanced_test(pool)));
-        std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+    dummy_performance.push_back(std::to_string(Test::imbalanced_test(pool)));
+    std::this_thread::sleep_for(std::chrono::milliseconds(2000));
 
-        dummy_performance.push_back(std::to_string(Test::recursion_test(pool)));
-        std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+    dummy_performance.push_back(std::to_string(Test::recursion_test(pool)));
+    std::this_thread::sleep_for(std::chrono::milliseconds(2000));
 
-        dummy_performance.push_back(
-                std::to_string(Test::recursion_test_merge(pool)));
-        std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+    dummy_performance.push_back(
+        std::to_string(Test::recursion_test_merge(pool)));
+    std::this_thread::sleep_for(std::chrono::milliseconds(2000));
 
-        pool.Exit();
-    }
-
+    pool.Exit();
+  }
 
   std::cout << "\nPerformance Table" << std::endl;
   print_formatted_vector(tests, tests, false);
