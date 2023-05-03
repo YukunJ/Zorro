@@ -25,27 +25,33 @@ Secondly, with a distributed work queue, synchronization is challenging. The mor
 
 --- 
 
-#### Preliminary Result
+#### System Diagram
 
-| Thread = 8               | Dummy | Global Queue |
-|--------------------------|-------|--------------|
-| Correctness              | 0     | 501 (**0.000**)  |
-| Light                    | 1     | 473 (**0.002**)  |
-| Computation              | 5260  | 686 (**7.668**)  |
-| Imbalanced               | 2187  | 328 (**6.668**)  |
-| Recursion (Divide)       | 106   | 27  (**3.926**)  |
-| Recursion (Divide+Merge) | 1269  | 888 (**1.429**)  |
+The final version, which is thread-local fine-grained locking queue with work stealing policy enabled, is illustrated in the diagram below for reference.
+
+<img src="img/system.png" alt="System Architecture" height="450">
 
 ---
 
+#### Performance Benchmark
+We benchmark our systems on PSC super computer cluster ranging thread from 2, 4, 8, ... to 128, and on various workload.
+
+<img src="img/light_task.png" alt="System Architecture" height="250">
+<img src="img/computation_task.png" alt="System Architecture" height="250">
+<img src="img/imbalanced_task.png" alt="System Architecture" height="250">
+<img src="img/quick_task.png" alt="System Architecture" height="250">
+<img src="img/merge_task.png" alt="System Architecture" height="250">
+
+
+---
 
 #### Schedule
 
 + [x] **Week1**: Read related literature and setup repo build with base interface
 + [x] **Week2**: Build the global work queue version
-+ [ ] **Week3**: Build the distributed thread-local work queue version
-+ [ ] **Week4**: Enable work-stealing policy to enhance work balance
-+ [ ] **Week5**: Wrap up the project and prepare report & poster
++ [x] **Week3**: Build the distributed thread-local work queue version
++ [x] **Week4**: Enable work-stealing policy to enhance work balance
++ [x] **Week5**: Wrap up the project and prepare report & poster
 
 
 
